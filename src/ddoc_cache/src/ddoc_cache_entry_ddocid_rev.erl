@@ -10,25 +10,28 @@
 % License for the specific language governing permissions and limitations under
 % the License.
 
--module(ddoc_cache_util).
+-module(ddoc_cache_entry_ddocid_rev).
 
 
 -export([
-    new_uuid/0
+    dbname/1,
+    ddocid/1,
+    recover/1
 ]).
 
 
-new_uuid() ->
-    to_hex(crypto:rand_bytes(16), []).
+-include_lib("couch/include/couch_db.hrl").
 
 
-to_hex(<<>>, Acc) ->
-    list_to_binary(lists:reverse(Acc));
-to_hex(<<C1:4, C2:4, Rest/binary>>, Acc) ->
-    to_hex(Rest, [hexdig(C1), hexdig(C2) | Acc]).
+dbname({DbName, _, _}) ->
+    DbName.
 
 
-hexdig(C) when C >= 0, C =< 9 ->
-    C + $0;
-hexdig(C) when C >= 10, C =< 15 ->
-    C + $A - 10.
+ddocid({_, DDocId, _}) ->
+    DDocId.
+
+
+recover({DbName, DDocId, Rev}) ->
+    Opts = [ejson_body, ?ADMIN_CTX],
+    {ok, [Resp]} = fabric:open_revs(DbName, DDocId, [Rev], Opts),
+    Resp.

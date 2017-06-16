@@ -10,9 +10,10 @@
 % License for the specific language governing permissions and limitations under
 % the License.
 
--module(ddoc_cache_opener).
+-module(ddoc_cache_tables).
 -behaviour(gen_server).
 -vsn(1).
+
 
 -export([
     start_link/0
@@ -28,12 +29,24 @@
 ]).
 
 
+-include("ddoc_cache.hrl").
+
+
 start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 
 init(_) ->
+    BaseOpts = [public, named_table],
+    CacheOpts = [
+        set,
+        {read_concurrency, true},
+        {keypos, #entry.key}
+    ] ++ BaseOpts,
+    ets:new(?CACHE, CacheOpts),
+    ets:new(?LRU, [ordered_set, {write_concurrency, true}] ++ BaseOpts),
     {ok, nil}.
+
 
 terminate(_Reason, _St) ->
     ok.
@@ -43,16 +56,6 @@ handle_call(Msg, _From, St) ->
     {stop, {invalid_call, Msg}, {invalid_call, Msg}, St}.
 
 
-% The do_evict clauses are upgrades while we're
-% in a rolling reboot.
-handle_cast({do_evict, _} = Msg, St) ->
-    gen_server:cast(ddoc_cache_lru, Msg),
-    {noreply, St};
-
-handle_cast({do_evict, DbName, DDocIds}, St) ->
-    gen_server:cast(ddoc_cache_lru, {do_refresh, DbName, DDocIds}),
-    {noreply, St};
-
 handle_cast(Msg, St) ->
     {stop, {invalid_cast, Msg}, St}.
 
@@ -61,5 +64,5 @@ handle_info(Msg, St) ->
     {stop, {invalid_info, Msg}, St}.
 
 
-code_change(_OldVsn, State, _Extra) ->
-    {ok, State}.
+code_change(_OldVsn, St, _Extra) ->
+    {ok, St}.

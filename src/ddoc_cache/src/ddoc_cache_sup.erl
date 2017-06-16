@@ -27,12 +27,20 @@ start_link() ->
 init([]) ->
     Children = [
         {
-            ddoc_cache_lru,
-            {ets_lru, start_link, [ddoc_cache_lru, lru_opts()]},
+            ddoc_cache_tables,
+            {ddoc_cache_tables, start_link, []},
             permanent,
             5000,
             worker,
-            [ets_lru]
+            [ddoc_cache_tables]
+        },
+        {
+            ddoc_cache_lru,
+            {ddoc_cache_lru, start_link, []},
+            permanent,
+            5000,
+            worker,
+            [ddoc_cache_lru]
         },
         {
             ddoc_cache_opener,
@@ -43,25 +51,4 @@ init([]) ->
             [ddoc_cache_opener]
         }
     ],
-    {ok, {{one_for_one, 5, 10}, Children}}.
-
-
-lru_opts() ->
-    case application:get_env(ddoc_cache, max_objects) of
-        {ok, MxObjs} when is_integer(MxObjs), MxObjs >= 0 ->
-            [{max_objects, MxObjs}];
-        _ ->
-            []
-    end ++
-    case application:get_env(ddoc_cache, max_size) of
-        {ok, MxSize} when is_integer(MxSize), MxSize >= 0 ->
-            [{max_size, MxSize}];
-        _ ->
-            []
-    end ++
-    case application:get_env(ddoc_cache, max_lifetime) of
-        {ok, MxLT} when is_integer(MxLT), MxLT >= 0 ->
-            [{max_lifetime, MxLT}];
-        _ ->
-            []
-    end.
+    {ok, {{one_for_all, 25, 1}, Children}}.
