@@ -65,6 +65,7 @@ pipeline {
               sh 'docker pull couchdbdev/centos-6-erlang-18.3'
               withDockerContainer(image: 'couchdbdev/centos-6-erlang-18.3', args: '-e LD_LIBRARY_PATH=/usr/local/bin --user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -89,6 +90,7 @@ pipeline {
               sh 'docker pull couchdbdev/centos-7-erlang-default'
               withDockerContainer(image: 'couchdbdev/centos-7-erlang-default', args: '-e LD_LIBRARY_PATH=/usr/local/bin --user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -113,6 +115,7 @@ pipeline {
               sh 'docker pull couchdbdev/centos-7-erlang-18.3'
               withDockerContainer(image: 'couchdbdev/centos-7-erlang-18.3', args: '-e LD_LIBRARY_PATH=/usr/local/bin --user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -137,6 +140,7 @@ pipeline {
               sh 'docker pull couchdbdev/ubuntu-12.04-erlang-18.3'
               withDockerContainer(image: 'couchdbdev/ubuntu-12.04-erlang-18.3', args: '--user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -161,6 +165,7 @@ pipeline {
               sh 'docker pull couchdbdev/ubuntu-14.04-erlang-default'
               withDockerContainer(image: 'couchdbdev/ubuntu-14.04-erlang-default', args: '--user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -185,6 +190,7 @@ pipeline {
               sh 'docker pull couchdbdev/ubuntu-14.04-erlang-18.3'
               withDockerContainer(image: 'couchdbdev/ubuntu-14.04-erlang-18.3', args: '--user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -209,6 +215,7 @@ pipeline {
               sh 'docker pull couchdbdev/ubuntu-16.04-erlang-default'
               withDockerContainer(image: 'couchdbdev/ubuntu-16.04-erlang-default', args: '--user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -233,6 +240,7 @@ pipeline {
               sh 'docker pull couchdbdev/ubuntu-16.04-erlang-18.3'
               withDockerContainer(image: 'couchdbdev/ubuntu-16.04-erlang-18.3', args: '--user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -257,6 +265,7 @@ pipeline {
               sh 'docker pull couchdbdev/debian-8-erlang-default'
               withDockerContainer(image: 'couchdbdev/debian-8-erlang-default', args: '--user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs
@@ -281,6 +290,7 @@ pipeline {
               sh 'docker pull couchdbdev/debian-8-erlang-18.3'
               withDockerContainer(image: 'couchdbdev/debian-8-erlang-18.3', args: '--user 0:0') {
                 sh '''
+                  ulimit -c unlimited
                   echo "***** COUCHDB_IO_LOG_DIR: ${COUCHDB_IO_LOG_DIR}"
                   cwd=$(pwd)
                   rm -rf /tmp/couchjslogs

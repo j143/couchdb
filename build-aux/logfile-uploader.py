@@ -45,6 +45,9 @@ def collect_logfiles():
     for log in glob.glob('/tmp/couchjslogs/*'):
         print ("Uploading OS process IO log", log)
         tb.add(log)
+    for core in glob.glob('core*'):
+        print ("Uploading core file", core)
+        tb.add(core)
     tb.close()
 
 def build_ci_doc():

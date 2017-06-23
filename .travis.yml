@@ -51,6 +51,8 @@ before_script:
   - ./configure -c --disable-docs --disable-fauxton
 
 script:
+   - ulimit -c unlimited
+   - cat /proc/sys/kernel/core_pattern
    - make check
 
 after_failure:

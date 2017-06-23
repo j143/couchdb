@@ -89,6 +89,18 @@ fauxton: share/www
 .PHONY: check
 # target: check - Test everything
 check: all
+	@echo "********* environment info ******** "
+	@cat /proc/meminfo
+	@free -m
+	@sh -c 'ulimit -a'
+	@grep -r '.*' /sys/fs/cgroup/memory/ || true
+	@tail -n 20 /proc/cpuinfo || true
+	@echo "******** environment info end ***** "
+	@echo "******** core file pattern:"
+	@ls -l /proc/sys/kernel/core_pattern || true
+	@cat /proc/sys/kernel/core_pattern || true
+	@cat /usr/share/apport/apport || true
+	@echo "************"
 	@$(MAKE) eunit
 	@$(MAKE) javascript
 #	@$(MAKE) build-test
@@ -116,6 +128,9 @@ endif
 	@rm -rf dev/lib
 	@dev/run -n 1 -q --with-admin-party-please \
             -c 'startup_jitter=0' \
+            -c 'os_process_limit=12' \
+            -c 'os_process_soft_limit=4' \
+            -c 'os_process_timeout=30000' \
             test/javascript/run $(suites)
 
 

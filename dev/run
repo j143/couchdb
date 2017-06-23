@@ -265,10 +265,10 @@ def hack_default_ini(ctx, node, contents):
     mainjs = os.path.join(ctx['rootdir'], "share", "server", "main.js")
     coffeejs = os.path.join(ctx['rootdir'], "share", "server", "main-coffee.js")
 
-    repl = toposixpath("javascript = %s %s" % (couchjs, mainjs))
+    repl = toposixpath("javascript = %s -S 4000000  %s" % (couchjs, mainjs))
     contents = re.sub("(?m)^javascript.*$", repl, contents)
 
-    repl = toposixpath("coffeescript = %s %s" % (couchjs, coffeejs))
+    repl = toposixpath("coffeescript = %s -S 4000000 %s" % (couchjs, coffeejs))
     contents = re.sub("(?m)^coffeescript.*$", repl, contents)
 
     return contents
