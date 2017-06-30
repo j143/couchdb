@@ -11,6 +11,7 @@
 % the License.
 
 -module(ddoc_cache_entry).
+-behaviour(gen_server).
 
 
 -export([
